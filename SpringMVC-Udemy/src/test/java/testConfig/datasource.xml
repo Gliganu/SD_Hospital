@@ -43,8 +43,8 @@
 			class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"></bean>
 
 		<bean id="usersDAO" class="daoLayer.UsersDAOHibernate"></bean>
-		<bean id="ofersDAO" class="daoLayer.OffersDAOHibernate"></bean>
-		<bean id="messagesDAO" class="daoLayer.MessagesDAOHibernate"></bean>
+		<bean id="patientsDAO" class="daoLayer.PatientsDAOHibernate"></bean>
+		<bean id="consultsDAO" class="daoLayer.ConsultationsDAOHibernate"></bean>
 
 		<tx:annotation-driven />
 

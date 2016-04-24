@@ -15,7 +15,7 @@
 	</definition>
 
 	<definition name="home" extends="offers.base">
-		<put-attribute name="title" value="Offers Home Page"></put-attribute>
+		<put-attribute name="title" value="Home"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/home.jsp"></put-attribute>
 	</definition>
 
@@ -89,7 +89,46 @@
 		<put-attribute name="title" value="Your Messages"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/allMessages.jsp"></put-attribute>
 	</definition>
+	
+	<definition name="patients" extends="offers.base">
+		<put-attribute name="title" value="Patients"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/patients.jsp"></put-attribute>
+	</definition>
+	
+	
+	<definition name="addEditPatient" extends="offers.base">
+		<put-attribute name="title" value="Edit Info"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/addEditPatient.jsp"></put-attribute>
+	</definition>
 
+
+	<definition name="consultations" extends="offers.base">
+		<put-attribute name="title" value="Consultations"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/consultations.jsp"></put-attribute>
+	</definition>
+	
+	
+	<definition name="pastConsultations" extends="offers.base">
+		<put-attribute name="title" value="Consultations"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/pastConsultations.jsp"></put-attribute>
+	</definition>
+	
+	
+	<definition name="addEditConsult" extends="offers.base">
+		<put-attribute name="title" value="Edit Info"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/addEditConsult.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="users" extends="offers.base">
+		<put-attribute name="title" value="Users"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/users.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="updateUserInfo" extends="offers.base">
+		<put-attribute name="title" value="Edit Info"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/updateUserInfo.jsp"></put-attribute>
+	</definition>
+	
 
 
 </tiles-definitions>

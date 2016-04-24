@@ -1,6 +1,7 @@
 package daoLayer;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.sql.DataSource;
 
@@ -34,7 +35,7 @@ public class UsersDAOHibernate implements UsersDAO{
 	
 	@Override
 	@Transactional
-	public void createUser(User user) {
+	public void saveUser(User user) {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		session().save(user);
 	}
@@ -60,6 +61,41 @@ public class UsersDAOHibernate implements UsersDAO{
 		crit.add(Restrictions.idEq(username)); 
 		User user=(User) crit.uniqueResult();
 		return user;
+	}
+
+	@Override
+	public void deleteAllUsers() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateUser(User user) {
+		session().saveOrUpdate(user);
+	}
+
+	@Override
+	public List<User> getAllDoctors() {
+		List<User> allUsersList = getAllUsers();
+		
+		List<User> filteredUsers = allUsersList.stream().filter(user -> user.getAuthority().equals("ROLE_DOCTOR"))
+				.collect(Collectors.toList());
+		
+		return filteredUsers;
+	}
+
+	@Override
+	public User getUserByName(String name) {
+		Criteria crit = session().createCriteria(User.class);
+		crit.add(Restrictions.eq("name", name)); //Metoda asta e ok daca you query for columns which are not PK
+		User user=(User) crit.uniqueResult();
+		return user;
+	}
+
+	@Override
+	public void deleteUser(String username) {
+		User user = getUser(username);
+		session().delete(user);
 	}
 
 }

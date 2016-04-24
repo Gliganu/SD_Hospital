@@ -7,7 +7,7 @@
 <p>
 
 
-<a class="title" href= <c:url value="/"/> > Offers </a> <br/> <br/>
+<a class="title" href= <c:url value="/"/> > Hospital </a> <br/> <br/>
 
 <sec:authorize access="!isAuthenticated()"> 
 <a class="login" href= <c:url value="/login"/> >Click here to log in</a> <br/> <br/>

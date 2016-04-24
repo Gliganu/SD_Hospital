@@ -12,7 +12,7 @@ $(document).ready(function(){
 
 
 </script>
-	<h3>Login with Username and Password, Belitule</h3>
+	<h3>Login with Username and Password</h3>
 
 	<c:url var="LOGIN_URL" value="/j_spring_security_check"></c:url>
 	
@@ -45,5 +45,3 @@ $(document).ready(function(){
 	
 <br />
 
-	<a href=<c:url value="/newAccount"/>>Click here to create new
-	account</a>
