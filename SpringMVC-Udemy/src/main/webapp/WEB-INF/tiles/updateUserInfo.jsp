@@ -9,7 +9,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 	
 	
-<h2>Update Your Info</h2>
+<h2>Update Info</h2>
 
 <c:url var="UPDATE_CLIENT_INFO_URL" value="/updateUserInfo"></c:url>
 
