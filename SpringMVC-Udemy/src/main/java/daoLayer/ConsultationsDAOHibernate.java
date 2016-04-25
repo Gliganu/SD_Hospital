@@ -85,10 +85,13 @@ public class ConsultationsDAOHibernate implements ConsultationsDAO{
 	@Override
 	public List<Consultation> getPastConsultations(String personalNumericCode, Date date) {
 
-		List<Consultation> consults = getConsultationsForPatient(personalNumericCode);
+		Criteria crit=session().createCriteria(Consultation.class);
+		crit.createAlias("patient", "patient");
+
+		crit.add(Restrictions.eq("patient.personalNumericCode",personalNumericCode));
+		List<Consultation> consults = crit.list();
 		
-		return consults;
-//		return consults.stream().filter(consult->consult.getDate().before(date)).collect(Collectors.toList());
+		return consults.stream().filter(consult->consult.getDate().before(date)).collect(Collectors.toList());
 	}
 
 	@Override

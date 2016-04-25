@@ -11,6 +11,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 @Table(name="patients")
@@ -18,19 +21,20 @@ public class Patient implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
-	@NotNull
+	@NotEmpty
 	private String name;
 	
-	@NotNull
+	@NotEmpty
 	@Size(min=13,max=13)
 	@Pattern(regexp="^(0|[1-9][0-9]*)$")
 	@Id
 	private String personalNumericCode;
 	
 	@NotNull
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateOfBirth;
 	
-	@NotNull
+	@NotEmpty
 	private String address;
 
 	public Patient(String name, String personalNumericCode, Date dateOfBirth, String address) {

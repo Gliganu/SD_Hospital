@@ -90,6 +90,17 @@ public class ActionsController {
 		if (result.hasErrors()) {
 			return ADD_EDIT_PATIENT_PAGE;
 		} else {
+				
+			if(patient.getDateOfBirth().after(new Date())){
+				result.rejectValue("dateOfBirth", "Future.patient.dateOfBirth");
+				return ADD_EDIT_PATIENT_PAGE;
+			}
+			
+			Patient existingPatient = patientsService.getPatient(patient.getPersonalNumericCode());
+			if( existingPatient != null && !existingPatient.getName().equals(patient.getName())){
+				result.rejectValue("personalNumericCode", "Exists.patient.personalNumericCode");
+				return ADD_EDIT_PATIENT_PAGE;
+			}
 			
 			patientsService.savePatient(patient);
 

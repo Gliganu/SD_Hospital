@@ -1,8 +1,6 @@
 package webLayer;
 
 import java.security.Principal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -10,18 +8,16 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import daoLayer.ConsultationsDAO;
+import domainLayer.Alert;
 import domainLayer.Consultation;
 import domainLayer.Patient;
 import domainLayer.Query;
@@ -72,8 +68,10 @@ public class ConsultationsController {
 
 	@RequestMapping(value = "/addConsult", method = RequestMethod.GET)
 	public String addConsult(@RequestParam(value = "id", required = true) String personalNumericCode, Model model, Principal principal) {
-
-		model = addParamForEditConsult(model, new Consultation(), "");
+		
+		Consultation consultation = new Consultation();
+		consultation.setPatientPersonalNumericCode(personalNumericCode);
+		model = addParamForEditConsult(model,consultation , "");
 		
 		return ADD_EDIT_CONSULT_PAGE;
 	}
@@ -83,7 +81,6 @@ public class ConsultationsController {
 
 		Consultation consultation = consultsService.getConsultation(consultId);
 		
-
 		model = addParamForEditConsult(model, consultation, "");
 		
 		return ADD_EDIT_CONSULT_PAGE;
@@ -91,8 +88,11 @@ public class ConsultationsController {
 	
 	@RequestMapping(value = "/checkDoctorSchedule", method = RequestMethod.POST)
 	public String checkDoctorSchedule(@Valid Query query,BindingResult result, Model model) {
-
-		model = addParamForEditConsult(model, new Consultation(), "");
+		
+		Consultation consultation = new Consultation();
+		consultation.setPatientPersonalNumericCode(query.getPatientPersonalNumericCode());
+		
+		model = addParamForEditConsult(model,consultation , "");
 		
 		List<Consultation> consultationsForDoctor = consultsService.getConsultationsForDoctor(query.getDoctorName());
 		model.addAttribute("consults", consultationsForDoctor);
@@ -105,7 +105,7 @@ public class ConsultationsController {
 	public String processUpdateConsult(@Valid Consultation consult, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
-			
+			model = addParamForEditConsult(model, consult, "Invalid Length");
 			return ADD_EDIT_CONSULT_PAGE;
 		} else {
 			
@@ -170,10 +170,18 @@ public class ConsultationsController {
 		return model;
 	}
 	
-//	@InitBinder
-//	protected void initBinder(WebDataBinder binder) {
-////	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd mm:hh aa");
-//	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//	    binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
-//	}
+	@MessageMapping("/hello")
+	@SendTo("/topic/greetings")
+	public Alert sendAlert(Principal principal) throws Exception {
+
+		Consultation consultation = consultsService.getApprochingConsultation(principal.getName());
+		
+		if(consultation == null){
+			return new Alert("");
+		}
+		
+		return new Alert("You have a consultation with "+consultation.getPatient().getName()+" which starts now");
+		
+	}
+	
 }

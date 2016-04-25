@@ -51,6 +51,17 @@ public class UsersService {
 
 
 	public void deleteUser(String username) {
+		
+		User user = getUser(username);
+		if("ROLE_DOCTOR".equals(user.getAuthority())){
+			List<Consultation> consultationsForDoctor = consultsDAO.getConsultationsForDoctor(user.getName());
+			
+			for(Consultation consult : consultationsForDoctor){
+				consultsDAO.deleteConsultation(consult.getId());
+			}
+			
+		}
+		
 		usersDao.deleteUser(username);
 	}
 
@@ -60,22 +71,22 @@ public class UsersService {
 	}
 
 
-	public boolean isDoctorAvailable(String doctorName, int length, Date consultDate) {
+	public boolean isDoctorAvailable(String doctorName, int lengthInMinutes, Date consultDate) {
 		long consultDateStart = consultDate.getTime();
-		long consultDateEnd = consultDateStart + length*60*1000;
+		long consultDateEnd = consultDateStart + lengthInMinutes*60*1000;
 		
 		List<Consultation> consultationsForDoctor = consultsDAO.getConsultationsForDoctor(doctorName);
 		
 		for(Consultation consultation: consultationsForDoctor){
 			
 			long targetDateStart = consultation.getDate().getTime();
-			long targetDateEnd = targetDateStart + length*60*1000;
+			long targetDateEnd = targetDateStart + lengthInMinutes*60*1000;
 			
-			if(targetDateStart < consultDateStart && targetDateEnd > consultDateStart){
+			if(targetDateStart <= consultDateStart && targetDateEnd >= consultDateStart){
 				return false;
 			}
 			
-			if(targetDateStart > consultDateStart && targetDateStart < targetDateEnd && targetDateEnd > consultDateEnd){
+			if(targetDateStart >= consultDateStart && targetDateStart <= targetDateEnd && targetDateEnd >= consultDateEnd){
 				return false;
 			}
 			

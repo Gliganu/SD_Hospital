@@ -42,6 +42,7 @@
 		<security:intercept-url pattern="/allMessages" access="isAuthenticated()" />
 		<security:intercept-url pattern="/sendMessage" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/patients" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/hello/**" access="permitAll" />
 		<security:intercept-url pattern="/" access="permitAll" />
 		<security:intercept-url pattern="/login" access="permitAll"/>
 		<security:intercept-url pattern="/logOut" access="permitAll"/>

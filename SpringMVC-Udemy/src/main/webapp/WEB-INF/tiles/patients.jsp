@@ -9,10 +9,10 @@
 
 
 
-
 <h2 class="error">${errorMsg}</h2>
 <h2 class="valid">${successMsg}</h2>
 
+<p id="response"></p>
 
 <sec:authorize access="!isAuthenticated()">
 
@@ -20,14 +20,15 @@
 
 </sec:authorize>
 
+<sec:authorize access="isAuthenticated()">
+
 <h2>View All Patients</h2>
+
+</sec:authorize>
 
 <sec:authorize access="hasRole('ROLE_ADMIN')">
 	<p>
-			<a href=<c:url value="/newAccount"/>>Create new account</a>
-	</p>
-	<p>
-			<a href=<c:url value="/allUsers"/>>See all accounts</a>
+			<a href=<c:url value="/allUsers"/>>Manage accounts</a>
 	</p>
 </sec:authorize>
 
@@ -75,6 +76,8 @@
 	</table>
 
 </sec:authorize>
+
+
 
 
 

@@ -24,7 +24,7 @@ public class Consultation {
 	private int id;
 	
 	@NotNull
-	@DateTimeFormat(pattern = "yyyy-MM-dd'T'hh:mm")
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private Date date;
 	
 	@ManyToOne
@@ -44,6 +44,8 @@ public class Consultation {
 	private String doctorName;
 	private String patientPersonalNumericCode;
 	
+	private boolean alertedDoctor = false;
+	
 	public Consultation(){
 		
 	}
@@ -54,6 +56,8 @@ public class Consultation {
 		this.user = user;
 		this.notes = notes;
 		this.length = length;
+		this.doctorName = user.getName();
+		this.patientPersonalNumericCode = patient.getPersonalNumericCode();
 	}
 
 
@@ -128,6 +132,14 @@ public class Consultation {
 
 	public void setLength(int length) {
 		this.length = length;
+	}
+
+	public boolean isAlertedDoctor() {
+		return alertedDoctor;
+	}
+
+	public void setAlertedDoctor(boolean alertedDoctor) {
+		this.alertedDoctor = alertedDoctor;
 	}
 
 	

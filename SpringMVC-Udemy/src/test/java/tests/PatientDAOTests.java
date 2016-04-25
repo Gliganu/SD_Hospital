@@ -67,5 +67,28 @@ public class PatientDAOTests {
 		assertEquals("Seven users should have been created and retrieved", 7, patientList.size());
 	}
 	
+	@Test
+	public void testExists(){
+		patientsDAO.saveOrUpdatePatient(p1);
+		patientsDAO.saveOrUpdatePatient(p2);
+		
+		assertTrue("Patient should exist", patientsDAO.checkIfExists(p1.getPersonalNumericCode()));
+		assertTrue("Patient should exist", patientsDAO.checkIfExists(p2.getPersonalNumericCode()));
+
+	}
+	
+	@Test
+	public void testUpdate(){
+		patientsDAO.saveOrUpdatePatient(p1);
+		
+		p1.setName("nameee");
+		
+		patientsDAO.saveOrUpdatePatient(p1);
+		
+		Patient retrieved = patientsDAO.getPatient(p1.getPersonalNumericCode());
+		
+		assertTrue(retrieved.getName().equals("nameee"));
+	}
+	
 	
 }

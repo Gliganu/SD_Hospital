@@ -23,9 +23,6 @@
 		<th>Doctor</th>
 		<th>Date</th>
 		<th>Length</th>
-		<sec:authorize access="hasRole('ROLE_DOCTOR')">
-			<th>Doctor Notes</th>
-		</sec:authorize>
 	</tr>
 
 	<c:forEach var="consult" items="${pastConsults}">
@@ -35,9 +32,6 @@
 			<td>${consult.user.name}</td>
 			<td>${consult.date}</td>
 			<td>${consult.length}</td>
-			<sec:authorize access="hasRole('ROLE_DOCTOR')">
-				<td><a href=<c:url value="/consultDoctorNotes?id=${consult.id}"/>>Note</a></td>
-			</sec:authorize>
 		</tr>
 	</c:forEach>
 </table>

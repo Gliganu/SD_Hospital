@@ -3,6 +3,7 @@ package tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -78,18 +79,34 @@ public class ConsultationsDAOTests {
 		patientsDAO.saveOrUpdatePatient(p3);
 		patientsDAO.saveOrUpdatePatient(p4);
 			
-		Consultation c1 = new Consultation(new Date(),p1,d1,"asd asdas dasdasdasdasda",30);
-		Consultation c2 = new Consultation(new Date(),p1,d2,"asd asdas dasdasdasdasda",30);
-		Consultation c3 = new Consultation(new Date(),p2,d2,"asd asdas dasdasdasdasda",60);
-		Consultation c4 = new Consultation(new Date(),p3,d2,"asd asdas dasdasdasdasda",50);
-		Consultation c5 = new Consultation(new Date(),p3,d3,"asd asdas dasdasdasdasda",40);
-			
-		consultsDAO.saveOrUpdateConsultation(c1);
-		consultsDAO.saveOrUpdateConsultation(c2);
-		consultsDAO.saveOrUpdateConsultation(c3);
-		consultsDAO.saveOrUpdateConsultation(c4);
-		consultsDAO.saveOrUpdateConsultation(c5);
+		List<Patient> patientList = new ArrayList<>();
+		patientList.add(p1);
+		patientList.add(p2);
+		patientList.add(p3);
 		
+		List<User> doctorList = new ArrayList<>();
+		doctorList.add(d1);
+		doctorList.add(d2);
+		doctorList.add(d3);
+		
+		for(Patient patient: patientList){
+			
+			for(int i=0;i<5;i++){
+				Consultation c1 = new Consultation(new Date(System.currentTimeMillis() - (i+1)*24*60*60*1000),patient,doctorList.get(i%3),"asd asdas dasdasdasdasda",30 + i*10);
+				Consultation c2 = new Consultation(new Date(System.currentTimeMillis() + (i+1)*24*60*60*1000),patient,doctorList.get(i%3),"asd asdas dasdasdasdasda",30 + i*10);
+				consultsDAO.saveOrUpdateConsultation(c1);
+				consultsDAO.saveOrUpdateConsultation(c2);
+			}
+			
+		}
+		
+		List<Consultation> l1 = consultsDAO.getConsultationsForPatient(p1.getPersonalNumericCode());
+		List<Consultation> l2 = consultsDAO.getConsultationsForPatient(p2.getPersonalNumericCode());
+		List<Consultation> l3 = consultsDAO.getConsultationsForPatient(p3.getPersonalNumericCode());
+		
+		assertEquals(l1.size(), 5);
+		assertEquals(l2.size(), 5);
+		assertEquals(l3.size(), 5);
 		
 	}
 	

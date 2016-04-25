@@ -97,7 +97,6 @@
 		<tr>
 			<th>Id</th>
 			<th>Patient</th>
-			<th>Doctor</th>
 			<th>Date</th>
 			<th>Length</th>
 		</tr>
@@ -106,7 +105,6 @@
 			<tr>
 				<td>${consult.id}</td>
 				<td>${consult.patient.name}</td>
-				<td>${consult.user.name}</td>
 				<td>${consult.date}</td>
 				<td>${consult.length}</td>
 			</tr>

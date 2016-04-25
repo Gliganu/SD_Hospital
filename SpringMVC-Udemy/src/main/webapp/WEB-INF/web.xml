@@ -9,14 +9,18 @@
     classpath:config/dao-context.xml
     </param-value>
   </context-param>
+  
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
+  
   <servlet>
     <servlet-name>offers</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
+    <async-supported>true</async-supported>
   </servlet>
+  
   <servlet-mapping>
     <servlet-name>offers</servlet-name>
     <url-pattern>/</url-pattern>

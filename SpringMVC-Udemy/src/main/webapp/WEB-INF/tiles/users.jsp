@@ -13,6 +13,10 @@
 <h2 class="error">${errorMsg}</h2>
 <h2 class="valid">${successMsg}</h2>
 
+<p>
+	<a href=<c:url value="/newAccount"/>>Create new account</a>
+</p>
+	
 <table class="allCenter" border=1 width=100%>
 	<tr>
 		<th>Username</th>

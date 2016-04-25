@@ -37,9 +37,6 @@
 		<th>Doctor</th>
 		<th>Date</th>
 		<th>Length</th>
-		<sec:authorize access="hasRole('ROLE_DOCTOR')">
-			<th>Doctor Notes</th>
-		</sec:authorize>
 		<sec:authorize access="hasRole('ROLE_SECRETARY')">
 			<th>Update</th>
 			<th>Delete</th>
@@ -53,9 +50,6 @@
 			<td>${consult.user.name}</td>
 			<td>${consult.date}</td>
 			<td>${consult.length}</td>
-			<sec:authorize access="hasRole('ROLE_DOCTOR')">
-				<td><a href=<c:url value="/consultDoctorNotes?id=${consult.id}"/>>Note</a></td>
-			</sec:authorize>
 			<sec:authorize access="hasRole('ROLE_SECRETARY')">
 				<td><a href=<c:url value="/updateConsult?id=${consult.id}&cnp=${patientCNP}"/>>Update</a></td>
 				<td><a href=<c:url value="/deleteConsult?id=${consult.id}&cnp=${patientCNP}"/>>Delete</a></td>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import daoLayer.ConsultationsDAO;
+import daoLayer.UsersDAO;
 import domainLayer.Consultation;
 import domainLayer.Patient;
 import domainLayer.User;
@@ -19,6 +20,9 @@ public class ConsultationsService {
 
 	@Autowired
 	private ConsultationsDAO consultsDAO;
+	
+	@Autowired
+	private UsersDAO usersDAO;
 	
 	public void saveOrUpdateConsultation(Consultation consultation){
 		consultsDAO.saveOrUpdateConsultation(consultation);
@@ -69,8 +73,35 @@ public class ConsultationsService {
 	}
 
 	public List<Consultation> getConsultationsForDoctor(String doctorName) {
-		return consultsDAO.getConsultationsForDoctor(doctorName);
 		
+		List<Consultation> consultList =  consultsDAO.getConsultationsForDoctor(doctorName);
+		
+		Collections.sort(consultList, new Comparator<Consultation>() {
+			    public int compare(Consultation c1, Consultation c2) {
+			        return c2.getDate().compareTo(c1.getDate());
+			    }
+			});
+		return consultList;
+		
+	}
+
+	public Consultation getApprochingConsultation(String doctorUsername) {
+		
+		User doctor = usersDAO.getUser(doctorUsername);
+		List<Consultation> consultationsForDoctor = getConsultationsForDoctor(doctor.getName());
+		Date now = new Date();
+		
+		int oneMinute = 1000*60;
+		for(Consultation consultation : consultationsForDoctor){
+			
+			if(Math.abs(consultation.getDate().getTime()- now.getTime()) < oneMinute && !consultation.isAlertedDoctor()){
+				consultation.setAlertedDoctor(true);
+				consultsDAO.saveOrUpdateConsultation(consultation);
+				return consultation;
+			}
+		}
+		
+		return null;
 	}
 
 }
