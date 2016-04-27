@@ -72,21 +72,21 @@ public class UsersService {
 
 
 	public boolean isDoctorAvailable(String doctorName, int lengthInMinutes, Date consultDate) {
-		long consultDateStart = consultDate.getTime();
-		long consultDateEnd = consultDateStart + lengthInMinutes*60*1000;
+		long newConsultDateStart = consultDate.getTime();
+		long newConsultDateEnd = newConsultDateStart + lengthInMinutes*60*1000;
 		
 		List<Consultation> consultationsForDoctor = consultsDAO.getConsultationsForDoctor(doctorName);
 		
 		for(Consultation consultation: consultationsForDoctor){
 			
-			long targetDateStart = consultation.getDate().getTime();
-			long targetDateEnd = targetDateStart + lengthInMinutes*60*1000;
+			long oldConsultDateStart = consultation.getDate().getTime();
+			long oldConsultDateEnd = oldConsultDateStart + lengthInMinutes*60*1000;
 			
-			if(targetDateStart <= consultDateStart && targetDateEnd >= consultDateStart){
+			if(oldConsultDateStart <= newConsultDateStart && oldConsultDateEnd >= newConsultDateStart){
 				return false;
 			}
 			
-			if(targetDateStart >= consultDateStart && targetDateStart <= targetDateEnd && targetDateEnd >= consultDateEnd){
+			if(oldConsultDateStart <= newConsultDateEnd && oldConsultDateEnd >= newConsultDateEnd ){
 				return false;
 			}
 			

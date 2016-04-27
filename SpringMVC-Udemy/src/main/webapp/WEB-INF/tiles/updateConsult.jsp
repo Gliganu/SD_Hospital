@@ -13,7 +13,7 @@
 <h2 class="valid">${successMsg}</h2>
 
 
-<c:url var="ADD_CONSULT_URL" value="/addConsult"></c:url> 
+<c:url var="ADD_CONSULT_URL" value="/updateConsult"></c:url> 
 
 
 <form:form id="details" action="${ADD_CONSULT_URL}" method="post"

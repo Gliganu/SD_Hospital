@@ -34,7 +34,8 @@ public class ConsultationsController {
 	public static String PATIENTS_PAGE = "patients";
 	public static String CONSULTS_PAGE = "consultations";
 	public static String PAST_CONSULTS_PAGE = "pastConsultations";
-
+	public static String UPDATE_CONSULT_PAGE = "updateConsult";
+	
 	@Autowired
 	PatientsService patientsService;
 	
@@ -76,33 +77,8 @@ public class ConsultationsController {
 		return ADD_EDIT_CONSULT_PAGE;
 	}
 	
-	@RequestMapping(value = "/updateConsult", method = RequestMethod.GET)
-	public String updateConsult(@RequestParam(value = "id", required = true) int consultId, Model model, Principal principal) {
-
-		Consultation consultation = consultsService.getConsultation(consultId);
-		
-		model = addParamForEditConsult(model, consultation, "");
-		
-		return ADD_EDIT_CONSULT_PAGE;
-	}
-	
-	@RequestMapping(value = "/checkDoctorSchedule", method = RequestMethod.POST)
-	public String checkDoctorSchedule(@Valid Query query,BindingResult result, Model model) {
-		
-		Consultation consultation = new Consultation();
-		consultation.setPatientPersonalNumericCode(query.getPatientPersonalNumericCode());
-		
-		model = addParamForEditConsult(model,consultation , "");
-		
-		List<Consultation> consultationsForDoctor = consultsService.getConsultationsForDoctor(query.getDoctorName());
-		model.addAttribute("consults", consultationsForDoctor);
-		model.addAttribute("selectedDoctor", query.getDoctorName());
-		
-		return ADD_EDIT_CONSULT_PAGE;
-	}
-	
-	@RequestMapping(value = "/updateConsult", method = RequestMethod.POST)
-	public String processUpdateConsult(@Valid Consultation consult, BindingResult result, Model model) {
+	@RequestMapping(value = "/addConsult", method = RequestMethod.POST)
+	public String processAddConsult(@Valid Consultation consult, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
 			model = addParamForEditConsult(model, consult, "Invalid Length");
@@ -141,6 +117,69 @@ public class ConsultationsController {
 			return showConsultations(personalNumericCode,model);
 		}
 
+	}
+	
+	@RequestMapping(value = "/updateConsult", method = RequestMethod.GET)
+	public String updateConsult(@RequestParam(value = "id", required = true) int consultId, Model model, Principal principal) {
+
+		Consultation consultation = consultsService.getConsultation(consultId);
+		
+		model = addParamForEditConsult(model, consultation, "");
+		
+		return UPDATE_CONSULT_PAGE;
+	}
+	
+	
+	@RequestMapping(value = "/updateConsult", method = RequestMethod.POST)
+	public String processUpdateConsult(@Valid Consultation consult, BindingResult result, Model model) {
+
+		if (result.hasErrors()) {
+			model = addParamForEditConsult(model, consult, "Invalid Length");
+			return UPDATE_CONSULT_PAGE;
+		} else {
+			
+			boolean formValid = true;
+			String invalidMessage = "";
+			
+			if (consult.getDate().before(new Date())) {
+				invalidMessage = "Cannot select date from past";
+				formValid = false;
+			}
+			
+			if(!formValid){
+				model = addParamForEditConsult(model, consult, invalidMessage);
+				return UPDATE_CONSULT_PAGE;
+			}
+			
+			
+			String personalNumericCode = consult.getPatientPersonalNumericCode();
+			
+			Patient patient = patientsService.getPatient(personalNumericCode);
+			consult.setPatient(patient);
+			
+			User doctor = usersService.getUserByName(consult.getDoctorName());
+			consult.setUser(doctor);
+			
+			consultsService.saveOrUpdateConsultation(consult);
+			
+			return showConsultations(personalNumericCode,model);
+		}
+
+	}
+	
+	@RequestMapping(value = "/checkDoctorSchedule", method = RequestMethod.POST)
+	public String checkDoctorSchedule(@Valid Query query,BindingResult result, Model model) {
+		
+		Consultation consultation = new Consultation();
+		consultation.setPatientPersonalNumericCode(query.getPatientPersonalNumericCode());
+		
+		model = addParamForEditConsult(model,consultation , "");
+		
+		List<Consultation> consultationsForDoctor = consultsService.getConsultationsForDoctor(query.getDoctorName());
+		model.addAttribute("consults", consultationsForDoctor);
+		model.addAttribute("selectedDoctor", query.getDoctorName());
+		
+		return ADD_EDIT_CONSULT_PAGE;
 	}
 	
 	@RequestMapping(value = "/consultHistory", method = RequestMethod.GET)

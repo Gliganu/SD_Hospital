@@ -50,6 +50,8 @@ public class PatientDAOTests {
 	public void init() {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 		
+		jdbcTemplate.execute("DELETE FROM consultations");
+		jdbcTemplate.execute("DELETE FROM users");
 		jdbcTemplate.execute("DELETE FROM patients");
 	}
 

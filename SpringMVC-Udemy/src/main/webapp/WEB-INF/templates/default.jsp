@@ -34,7 +34,8 @@
         function init(){
         	connect();
         	setInterval(function() {
-        		   stompClient.send("/app/hello", {}, JSON.stringify({ 'name': 'GLIGAA' }));
+        		/*    stompClient.send("/app/hello", {}, JSON.stringify({ 'name': 'GLIGAA' })); */
+        		 stompClient.send("/app/hello", {}, {});
         		}, 1000 * 15);  
         }
         

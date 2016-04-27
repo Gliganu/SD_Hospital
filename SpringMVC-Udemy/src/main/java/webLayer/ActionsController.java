@@ -33,6 +33,7 @@ public class ActionsController {
 
 	public static String ADD_EDIT_PATIENT_PAGE = "addEditPatient";
 	public static String ADD_EDIT_CONSULT_PAGE = "addEditConsult";
+	public static String UPDATE_PATIENT_PAGE = "updatePatient";
 	public static String PATIENTS_PAGE = "patients";
 	public static String CONSULTS_PAGE = "consultations";
 
@@ -74,18 +75,8 @@ public class ActionsController {
 		return ADD_EDIT_PATIENT_PAGE;
 	}
 	
-	@RequestMapping(value = "/updatePatient", method = RequestMethod.GET)
-	public String updatePatient(@RequestParam("id") String personalNumericCode, Model model, Principal principal) {
-
-		Patient patient = patientsService.getPatient(personalNumericCode);
-
-		model.addAttribute("patient", patient);
-
-		return ADD_EDIT_PATIENT_PAGE;
-	}
-
-	@RequestMapping(value = "/updatePatient", method = RequestMethod.POST)
-	public String processUpdatePatient(@Valid Patient patient, BindingResult result, Model model) {
+	@RequestMapping(value = "/addPatient", method = RequestMethod.POST)
+	public String processAddPatient(@Valid Patient patient, BindingResult result, Model model) {
 
 		if (result.hasErrors()) {
 			return ADD_EDIT_PATIENT_PAGE;
@@ -102,6 +93,35 @@ public class ActionsController {
 				return ADD_EDIT_PATIENT_PAGE;
 			}
 			
+			patientsService.savePatient(patient);
+
+			return showHomeWithMessage(model, "Successfully updated patient info");
+		}
+
+	}
+	
+	@RequestMapping(value = "/updatePatient", method = RequestMethod.GET)
+	public String updatePatient(@RequestParam("id") String personalNumericCode, Model model, Principal principal) {
+
+		Patient patient = patientsService.getPatient(personalNumericCode);
+
+		model.addAttribute("patient", patient);
+
+		return UPDATE_PATIENT_PAGE;
+	}
+
+	
+	@RequestMapping(value = "/updatePatient", method = RequestMethod.POST)
+	public String processUpdatePatient(@Valid Patient patient, BindingResult result, Model model) {
+
+		if (result.hasErrors()) {
+			return UPDATE_PATIENT_PAGE;
+		} else {
+				
+			if(patient.getDateOfBirth().after(new Date())){
+				result.rejectValue("dateOfBirth", "Future.patient.dateOfBirth");
+				return UPDATE_PATIENT_PAGE;
+			}
 			patientsService.savePatient(patient);
 
 			return showHomeWithMessage(model, "Successfully updated patient info");

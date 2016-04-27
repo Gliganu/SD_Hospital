@@ -100,6 +100,12 @@
 		<put-attribute name="title" value="Edit Info"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/addEditPatient.jsp"></put-attribute>
 	</definition>
+	
+	<definition name="updatePatient" extends="offers.base">
+		<put-attribute name="title" value="Edit Info"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/updatePatient.jsp"></put-attribute>
+	</definition>
+	
 
 
 	<definition name="consultations" extends="offers.base">
@@ -117,6 +123,11 @@
 	<definition name="addEditConsult" extends="offers.base">
 		<put-attribute name="title" value="Edit Info"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/tiles/addEditConsult.jsp"></put-attribute>
+	</definition>
+	
+	<definition name="updateConsult" extends="offers.base">
+		<put-attribute name="title" value="Edit Info"></put-attribute>
+		<put-attribute name="content" value="/WEB-INF/tiles/updateConsult.jsp"></put-attribute>
 	</definition>
 	
 	<definition name="users" extends="offers.base">

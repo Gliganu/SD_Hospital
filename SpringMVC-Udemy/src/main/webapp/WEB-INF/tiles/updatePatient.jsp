@@ -10,7 +10,7 @@
 <h2>Update patient info</h2>
 
 
-<c:url var="ADD_PATIENT_URL" value="/addPatient"></c:url>
+<c:url var="ADD_PATIENT_URL" value="/updatePatient"></c:url>
 
 
 <form:form id="details" action="${ADD_PATIENT_URL}" method="post"
